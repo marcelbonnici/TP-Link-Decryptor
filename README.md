@@ -10,7 +10,7 @@ Make hardware hacking thumbnail, router hacking video
 ### Video Demonstration
 [CLICK HERE TO WATCH](https://youtu.be/NpEaa2P7qZI)
 
-[![TP-Link Decryptor](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DNpEaa2P7qZI&psig=AOvVaw18Vl1yxKN5_JZf0taV-mKV&ust=1762751240966000&source=images&cd=vfe&opi=89978449&ved=0CBYQjRxqFwoTCOCA_52m5JADFQAAAAAdAAAAABAE)](https://youtu.be/NpEaa2P7qZI)
+[![TP-Link Decryptor](https://i.ytimg.com/vi/NpEaa2P7qZI/maxresdefault.jpg)](https://youtu.be/NpEaa2P7qZI)
 
 ### Hardware
 * [TP-Link WR841n Wireless Router](https://www.ebay.com/sch/i.html?_nkw=WR841N&_sacat=0&_from=R40&_trksid=p4624852.m570.l1313)
@@ -34,4 +34,4 @@ The software required:
 
 First, we look to the WR841N's documented pinout to connect a CH341A flash programmer to the router's flash ROM to read all its contents. Then it was extracted via the following command: `flashrom -p ch341a_spi -r tp_link_wr841n_ext.bin`. Critically, the flash dump's boot partition reveals that a config section exists from 0x3E0000 to 0x3F0000. So, running `binwalk -E tp_link_wr841n_ext.bin` (where `-E` is for entropy) reveals an entropy plot with anomalies around the 0x3E0000th(4,063,232th in decimal) offset.
 
-Let's carve out the config section into `config.bin` using Data Duplicator: `dd if=tp_link_wr841n_ext.bin bs=1 skip=4063232 count=65536 of=config.bin`. The `if` stands for "in file", `bs` means block size which is 1 for easier math, the `skip` ahead point explains itself, and `count` is the decimal window size calculated from 0x3F0000 minus 0x3E0000. The garbled, resulting file must then be decrypted in Ghidra.
+Let's carve out the config section into `config.bin` using Data Duplicator: `dd if=tp_link_wr841n_ext.bin bs=1 skip=4063232 count=65536 of=config.bin`. The `if` stands for "in file", `bs` means block size which is 1 for easier math, the `skip` ahead point explains itself, and `count` is the decimal window size calculated from 0x3F0000 minus 0x3E0000. The garbled, resulting file must then be decrypted in Ghidra. 
