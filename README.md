@@ -51,13 +51,13 @@ Use the male pins on the programmer's included converter board to connect to the
 
 Clasp the clip on the chip with the pink cable corresponding with the dimpled corner on the IC.
 
-![Clamping Onto The Flash Chip](https://3o6pkajl5f.ucarecd.net/2f1dcd34-3199-4070-a62b-66eaa927dd33/2c.gif)
+![Clamping Onto The Flash Chip](README-images/2c.gif)
 
 Finally, connect the programmer to a computer's USB port. In the terminal, and in the directory where you want the flash to dump, run `flashrom -c EN25QH32 -p ch341a_spi -r tp_link_wr841n_ext.bin` (*C*hipname, *P*rogrammer name, *R*ead flash/save to).
 
 Extract the flash dump so it is more reverse-engineering friendly for later with `binwalk -e tp_link_wr841n_ext.bin` (*E*xtract).
 
-![Flashing and Binwalking](https://3o6pkajl5f.ucarecd.net/76f32d44-8d62-46f4-8ce8-c5209cdc45c4/2d.gif)
+![Flashing and Binwalking](README-images/2d.gif)
 
 Disconnect the CH341A programmer from the PC, then disconnect the router from the PC.
 
@@ -70,13 +70,13 @@ In a terminal, run `ls -l /dev/serial/by-id` to reveal the `ttyUSBx` port that t
 
 Plug the router into a power source. Let the UART logs print for a few seconds before pausing them by hitting `Ctrl+A` followed by `[`. Take note of how data is partitioned (for instance, what's the `kernel` range of where data is stored, what's the `config` range, etc) and then hit `q`.
 
-![Observing Partitions in the Boot Logs](https://3o6pkajl5f.ucarecd.net/7d7b0cac-e28f-41a3-b1d0-2f8c04303676/3b.gif)
+![Observing Partitions in the Boot Logs](README-images/3b.gif)
 
 In Kali's Firefox search bar, log into the router using the common IP address of `192.168.0.1`. To start cracking the SSID and password, see what the terminal logging `screen` reveals once they are set up.
 
 Navigate to the `Quick Setup` tab, setting up the `Operation Mode` as `Access Point` and making the `Wireless Network Name`/`Wireless Password` whatever one likes. Unless one uses this router outside of this exercise, consider keeping the defaults to stay consistent with what's already on the flash dump.
 
-![Diving into the Router's Web Portal](https://3o6pkajl5f.ucarecd.net/cf6dda56-32dd-48f8-a784-9397cbec3c14/3c.gif)
+![Diving into the Router's Web Portal](README-images/3c.gif)
 
 Continue with the rest of `Quick Setup` as default values, click `Finish`, and immediately get ready to hit `Ctrl+A` and then `[` in the terminal after seeing lines about erases and writes.
 
