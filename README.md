@@ -116,5 +116,5 @@ After observing the `Invalid key length: 8 bytes` error in CyberChef, clarify th
 
 The queries finally reveals the credentials from the flash dump, which are `TP-Link_D052` & `17614627` or something similar. An earlier screenshot confirms this is what the SSID and password were set to, proving we found the right credential pair.
 
-### Future Possibilities
+## Future Possibilities
 Creating a script that ingests a binary for this router and automatically returns the SSID & password would make this walkthrough more user-friendly. It would also give me experience with Ghidra's API, enriching my reverse engineering skillset. Until then, I look forward to astonishing my colleagues at our next hackathon.
