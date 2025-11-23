@@ -31,43 +31,52 @@ The software required:
 8. [CyberChef](https://gchq.github.io/CyberChef/)
 
 ## How to Expose the SSID & Password
-### Part 1: Flash Dumping
+### Part 1: Opening The Router
+Place the router upside down on a table. Unscrew the two screws near the back legs of the router. Place the router right side up to start removing the router's lid.
+
+![Unscrewing The Router](https://3o6pkajl5f.ucarecd.net/245ba879-f372-40bb-80a7-e47fad27a465/1a.JPG)
+
+Using a flat head screwdriver (or other prying device), wedge it between the lid and base starting by the antenna near the `RESET` button. Twist your tool until the lid releases, making sure to not dig the tool any deeper into the router than needed. Moving around the router clockwise, pry open the remaining 3 corners until the lid fully disconnects. Remove it to see the PCB.
+
+![Opening The Router](https://3o6pkajl5f.ucarecd.net/ecb5e890-6697-4cc7-a883-321ba9a040c1/1b.JPG)
+
+### Part 2: Flash Dumping
 Reverse engineering starts with a flash dump from the router's ROM, so one should do that first. With good eye sight (and double checking on Google) it is clear that that the router's flash chip is the `EN25Q32B`, A.K.A. a series 25 chip one can extract from with a `CH341A` programmer.
 
-[Figure 1]
+![Identifying the Flash Chip](https://3o6pkajl5f.ucarecd.net/883fa73c-a2ee-4aa4-871e-e2563c459b38/2a.jpg)
 
 Use the male pins on the programmer's included converter board to connect to the test clip, aligning the pink cable with pin 1 and pin 1 with what the product listing's diagram shows.
 
-[Figure 2]
+![CH341A Setup](https://3o6pkajl5f.ucarecd.net/3516ea91-7cc8-430b-9469-62d295f61720/2b.jpg)
 
 Clasp the clip on the chip with the pink cable corresponding with the dimpled corner on the IC.
 
-[Figure 3]
+![Clamping Onto The Flash Chip](https://3o6pkajl5f.ucarecd.net/2f1dcd34-3199-4070-a62b-66eaa927dd33/2c.gif)
 
 Finally, connect the programmer to a computer's USB port. In the terminal, and in the directory where you want the flash to dump, run `flashrom -c EN25QH32 -p ch341a_spi -r tp_link_wr841n_ext.bin` (*C*hipname, *P*rogrammer name, *R*ead flash/save to).
 
 Extract the flash dump so it is more reverse-engineering friendly for later with `binwalk -e tp_link_wr841n_ext.bin` (*E*xtract).
 
-[Figure 4: Flashrom & Binwalk GIF(s?)]
+![Flashing and Binwalking](https://3o6pkajl5f.ucarecd.net/76f32d44-8d62-46f4-8ce8-c5209cdc45c4/2d.gif)
 
 Disconnect the CH341A programmer from the PC, then disconnect the router from the PC.
 
-### Part 2: UART Logging
+### Part 3: UART Logging
 Via ethernet cable, connect a PC to one of the router's LAN ports. The router has clearly labeled UART through-holes, but no header pins; solder header pins on before making the UART connections or, desperately and solderlessly, forcefully angle four header pins in the through-holes with an elastic band. Connect the router's GND, Rx, and Tx ports to the GND, Tx, and Rx pins of the UART adapter, respectively.
 
-[Figure 5]
+![UART Connections](https://3o6pkajl5f.ucarecd.net/899086df-e08b-4d6f-b49c-fa10269dec1d/3a.jpg)
 
 In a terminal, run `ls -l /dev/serial/by-id` to reveal the `ttyUSBx` port that the CP2102 is on. Run `sudo screen /dev/ttyUSBx 115200` to see the router's UART logs at its baud rate of 115200 (this is the most common UART baud rate around, so finding it was an educated guess).
 
 Plug the router into a power source. Let the UART logs print for a few seconds before pausing them by hitting `Ctrl+A` followed by `[`. Take note of how data is partitioned (for instance, what's the `kernel` range of where data is stored, what's the `config` range, etc) and then hit `q`.
 
-[Figure 6: Partitions]
+![Observing Partitions in the Boot Logs](https://3o6pkajl5f.ucarecd.net/7d7b0cac-e28f-41a3-b1d0-2f8c04303676/3b.gif)
 
 In Kali's Firefox search bar, log into the router using the common IP address of `192.168.0.1`. To start cracking the SSID and password, see what the terminal logging `screen` reveals once they are set up.
 
 Navigate to the `Quick Setup` tab, setting up the `Operation Mode` as `Access Point` and making the `Wireless Network Name`/`Wireless Password` whatever one likes. Unless one uses this router outside of this exercise, consider keeping the defaults to stay consistent with what's already on the flash dump.
 
-[Figure 7: Defaults]
+![Diving into the Router's Web Portal](https://3o6pkajl5f.ucarecd.net/cf6dda56-32dd-48f8-a784-9397cbec3c14/3c.gif)
 
 Continue with the rest of `Quick Setup` as default values, click `Finish`, and immediately get ready to hit `Ctrl+A` and then `[` in the terminal after seeing lines about erases and writes.
 
@@ -85,7 +94,7 @@ However, the download does not log anything new to the `screen` terminal. So, tr
 
 [Figure 10: rsl_sys_restoreCfg GIF?]
 
-### Part 3: Reverse Engineering
+### Part 4: Reverse Engineering
 To find what file of the extracted .bin has the `rsl_sys_restoreCfg` error, try CD-ing down the tamest looking folder path: it should look something like `cd ~/tp_ink_wr841n/firmware/_tp_link_r841n_ext.bin.extracted/squashfs-root`.
 
 Then search each folder for the error using `strings -f * | grep "rsl_sys_restoreCfg"`. One will only get a hit in the `lib` folder for a file called `libcmm.so`. With `libcmm.so` open in Ghidra, go to `Search > Program Text`, search for `rsl_sys_restoreCfg`, and click `Search All` to find the function's location.
@@ -99,7 +108,7 @@ Double-click the `oal_sys_writeCfgFlash` function to see that TP-Link specifical
 
 [Figure 12: oal_sys_writeCfgFlash GIF]
 
-### Part 4: Credential Decrypting
+### Part 5: Credential Decrypting
 The site `cyberchef.io` is one popular tool for decrypting data. Once there, load an `AES Decrypt` step into a recipe.
 
 [Figure 13: CyChef AES]
