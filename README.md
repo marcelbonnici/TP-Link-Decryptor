@@ -10,7 +10,7 @@ Make hardware hacking thumbnail, router hacking video
 ### Video Demonstration
 [Coming December 2025](https://youtu.be/NpEaa2P7qZI)
 
-[![TP-Link Decryptor](https://i.ytimg.com/vi/NpEaa2P7qZI/maxresdefault.jpg)](https://youtu.be/NpEaa2P7qZI)
+[![TP-Link Decryptor](https://3o6pkajl5f.ucarecd.net/6b06296a-22b9-4a36-afaa-efdcd7644fa8/thumbnailwplay.png)](https://youtu.be/NpEaa2P7qZI)
 
 ### Hardware
 * [TP-Link WR841n Wireless Router](https://www.ebay.com/sch/i.html?_nkw=WR841N&_sacat=0&_from=R40&_trksid=p4624852.m570.l1313)
