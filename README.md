@@ -1,5 +1,5 @@
 ## TP-Link Decryptor - Router Hardware Hacking
-This hardware hacking project describes how to exploit the widespread WR841N router to uncover its network name and password. The process is accomplished using a CP2102 TTL to USB Adapter, USB Logic Analyzer, male through-hole header pins (to connect to the router's UART pins), and a variety of software to interpret the device's messages.
+This hardware hacking project describes how to exploit the widespread WR841N router to uncover its network name and password. The process is accomplished using a CP2102 TTL to USB Adapter, CH341A programmer, male through-hole header pins (to connect to the router's UART pins), and software (from Flashrom to Ghidra) to interpret the device's messages.
 
 ### Video Demonstration
 [Not Yet Available. Coming December 2025.](https://youtu.be/NpEaa2P7qZI)
