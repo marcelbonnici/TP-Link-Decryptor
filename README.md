@@ -8,7 +8,7 @@ As a software engineer in cybersecurity, I joined hackathons where my colleagues
 Make hardware hacking thumbnail, router hacking video
 
 ### Video Demonstration
-[Not Yet Available. Coming December 2025](https://youtu.be/NpEaa2P7qZI)
+[Not Yet Available. Coming December 2025.](https://youtu.be/NpEaa2P7qZI)
 
 [![TP-Link Decryptor](https://3o6pkajl5f.ucarecd.net/6b06296a-22b9-4a36-afaa-efdcd7644fa8/thumbnailwplay.png)](https://youtu.be/NpEaa2P7qZI)
 
