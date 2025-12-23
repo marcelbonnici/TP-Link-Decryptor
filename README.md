@@ -94,11 +94,11 @@ However, the download does not log anything new to the `screen` terminal. So, tr
 ![Figure: Invalid Backup File Reveals Insightful Error Message](https://3o6pkajl5f.ucarecd.net/a93ac2b0-4707-4f8c-8bb7-7b35962da313/3f.jpg)
 
 ### Part 4: Reverse Engineering
-To find what file of the extracted .bin has the `rsl_sys_restoreCfg` error, try CD-ing down the tamest looking folder path: it should look something like `cd ~/tp_ink_wr841n/firmware/_tp_link_r841n_ext.bin.extracted/squashfs-root`.
+To find what file of the extracted .bin has the `rsl_sys_restoreCfg` error, try CD-ing down the tamest looking folder path: it should look something like `cd ~/tp_link_wr841n/firmware/_tp_link_wr841n_ext.bin.extracted/squashfs-root`.
 
 Then search each folder for the error using `strings -f * | grep "rsl_sys_restoreCfg"`. One will only get a hit in the `lib` folder for a file called `libcmm.so`. With `libcmm.so` open in Ghidra, go to `Search > Program Text`, search for `rsl_sys_restoreCfg`, and click `Search All` to find the function's location.
 
-Open the result in Ghidra's Decompiler window and scroll down to the error description (`Config file MD5 check fail`).
+Open the result in Ghidra's Decompiler window and scroll down to the error description called `Config file MD5 check fail`.
 Here, it shows if one surpasses that error-checking `if` statement, the restore process would have done an uncompression (`cen_uncompressBuff`), a restoration (`dm_restoreCfg`), and then an `oal_sys_writeCfgFlash`. This is an encryption or decryption process.
 
 ![Figure: Decompiling The Flash To Find Notable Functions](https://3o6pkajl5f.ucarecd.net/367e3b38-3661-4074-838b-6422fe6e6837/4a.jpg)
