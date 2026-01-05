@@ -116,7 +116,7 @@ For the `Key` field, double-click `gKey` in Ghidra's decompiler which reveals th
 
 ![Figure: Finding The Key & IV In Ghidra](README-gifs/5b.gif)
 
-For CyberChef's `Input Panel`, `conf.bin` needs to be in raw hex. In a new terminal, navigate to the folder with `conf.bin` and run a hex dump tool: `xxd -p config.bin > config.txt` (Output *plain* continuous hex). Run `mousepad config.txt` to easily copy the contents, then paste them into CyberChef's panel.
+For CyberChef's `Input Panel`, `config.bin` needs to be in raw hex. In a new terminal, navigate to the folder with `config.bin` and run a hex dump tool: `xxd -p config.bin > config.txt` (Output *plain* continuous hex). Run `mousepad config.txt` to easily copy the contents, then paste them into CyberChef's panel.
 
 After observing the `Invalid key length: 8 bytes` error in CyberChef, clarify that `gKey` and `gIv` are formatted in `UTF8`. Presented with a mostly-legible output, hit `Ctrl+F` to search for `<SSID val=` and `PreSharedKey val=`.
 
